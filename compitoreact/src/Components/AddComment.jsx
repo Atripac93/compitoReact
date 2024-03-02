@@ -7,19 +7,21 @@ import {
   FormLabel,
 } from "react-bootstrap";
 
-const AddComment = ({ asin }) => {
+const AddComment = ({ book }) => {
   const [comment, setComment] = useState({
     comment: "",
     rate: 1,
     elementId: null,
   });
 
+  console.log(book);
+
   useEffect(() => {
     setComment((comment) => ({
       ...comment,
-      elementId: asin,
+      elementId: book.asin,
     }));
-  }, [asin]);
+  }, [book.asin]);
 
   const commentSend = async (e) => {
     e.preventDefault();
