@@ -1,18 +1,24 @@
-import React from "react";
-import Button from "react-bootstrap/Button";
+import React, { useEffect, useState } from "react";
 import Card from "react-bootstrap/Card";
-// import CommentArea from "../Components/CommentArea";
+import CommentArea from "../Components/CommentArea";
 
-const SingleBook = ({ title, price, img }) => {
+const SingleBook = ({ book }) => {
+  const [buch, setBuch] = useState(null);
+
+  useEffect(() => {
+    setBuch({
+      book,
+    });
+  }, [book]);
+
   return (
     <>
       <Card style={{ width: "18rem" }}>
-        <Card.Img variant="top" src={img} />
+        <Card.Img variant="top" src={book.img} />
         <Card.Body>
-          <Card.Title>{title}</Card.Title>
-          <Card.Text>{price}</Card.Text>
-          <Button variant="primary">Inserisci un commento</Button>
-          {/* <CommentArea asin={asin} /> */}
+          <Card.Title>{book.title}</Card.Title>
+          <Card.Text>{book.price}</Card.Text>
+          <CommentArea book={book} />
         </Card.Body>
       </Card>
     </>
