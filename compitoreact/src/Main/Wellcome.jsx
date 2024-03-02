@@ -59,12 +59,7 @@ const Welcome = () => {
           {!error &&
             !isLoading &&
             filterBooks.map((book) => (
-              <SingleBook
-                key={nanoid()}
-                title={book.title}
-                price={book.price}
-                img={book.img}
-              />
+              <SingleBook key={nanoid()} book={book} />
             ))}
         </div>
       </div>
