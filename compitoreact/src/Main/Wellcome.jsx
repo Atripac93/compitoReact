@@ -46,7 +46,12 @@ const Welcome = () => {
       />
       <div className="row">
         <div className="col d-flex flex-wrap gap-3">
-          {error && !isLoading && <div>Ops, errore!</div>}
+          {error && !isLoading && (
+            <img
+              src="https://creare-sito-web-gratis.it/wp-content/uploads/2023/09/errore-404-pagina-non-trovata.jpg"
+              alt="errorPage"
+            />
+          )}
           {!error && isLoading && <Loading />}
           {!error && !isLoading && filterBooks.length === 0 && (
             <div className="fs-1 m-5">Libro non trovato!</div>
