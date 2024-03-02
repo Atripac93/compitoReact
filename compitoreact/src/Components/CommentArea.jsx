@@ -1,64 +1,41 @@
 import React, { useEffect, useState } from "react";
-import Container from "react-bootstrap/Container";
-import SingleBook from "../SingleBook/SingleBook";
-import Loading from "../Spinner/Loading";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import AddComment from "./AddComment";
 
-const Welcome = () => {
-  const [books, setBooks] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [searchBooks, setSearchBooks] = useState("");
-
-  const getBooks = async () => {
-    setIsLoading(true);
-    try {
-      const resp = await fetch("https://epibooks.onrender.com/");
-      const data = await resp.json();
-      setBooks(data.slice(0, 12));
-      setIsLoading(false);
-    } catch (e) {
-      setError(e);
-      setIsLoading(false);
-    }
-  };
+function CommentArea({ book }) {
+  const values = [true];
+  const [fullscreen, setFullscreen] = useState(true);
+  const [show, setShow] = useState(false);
+  const [getBook, setGetBook] = useState(book);
 
   useEffect(() => {
-    getBooks();
+    setGetBook(book);
   }, []);
 
-  const changeInput = (e) => {
-    setSearchBooks(e.target.value);
-  };
-
-  const filteredBooks = books.filter((book) =>
-    book.title.toLowerCase().includes(searchBooks.toLowerCase())
-  );
+  function handleShow(breakpoint) {
+    setFullscreen(breakpoint);
+    setShow(true);
+  }
 
   return (
-    <Container className="mt-3">
-      <input
-        className="mb-3"
-        type="text"
-        placeholder="Cerca libro..."
-        value={searchBooks}
-        onChange={changeInput}
-      />
-      <div className="row">
-        <div className="col d-flex flex-wrap gap-3">
-          {error && !isLoading && <div>Ops, errore!</div>}
-          {!error && isLoading && <Loading />}
-          {!error && !isLoading && filteredBooks.length === 0 && (
-            <div className="fs-5 m-5">Nessun libro trovato!</div>
-          )}
-          {!error &&
-            !isLoading &&
-            filteredBooks.map((book) => (
-              <SingleBook key={book.id} book={book} />
-            ))}
-        </div>
-      </div>
-    </Container>
+    <>
+      {values.map((v, idx) => (
+        <Button key={idx} className="me-2 mb-2" onClick={() => handleShow(v)}>
+          inserisci una recensione!
+          {typeof v === "string" && `below ${v.split("-")[0]}`}
+        </Button>
+      ))}
+      <Modal show={show} fullscreen={fullscreen} onHide={() => setShow(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Comment Area</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <AddComment book={getBook} />
+        </Modal.Body>
+      </Modal>
+    </>
   );
-};
+}
 
-export default Welcome;
+export default CommentArea;
